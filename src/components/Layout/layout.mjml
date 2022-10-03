@@ -1,0 +1,13 @@
+<mjml>
+  <mj-style>
+    
+  </mj-style>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-include path="./layout.css" type="css" />
+        <mj-text css-class="layout" >mj text text</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
