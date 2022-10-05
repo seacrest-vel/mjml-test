@@ -2,7 +2,7 @@ import express from 'express';
 import mjml from 'mjml';
 import { BodyComponent } from 'mjml-core';
 import { createComponent } from './base/create-component';
-import { Footer } from './components/Footer/Footer';
+import { Footer, FooterStyles } from './components/Footer/Footer';
 import { Logo } from './components/Logo/Logo';
 
 const app = express();
@@ -18,7 +18,6 @@ const component = createComponent(`<mjml>
             box-sizing: border-box;
             padding: 0;
             margin: 0;
-            font-size: 16px !important;
           }
           .layout {
             margin: 0;
@@ -36,9 +35,11 @@ const component = createComponent(`<mjml>
             background-color: #ffffff;
             color: #374656;
           }
+          ${FooterStyles}
         </mj-style>
         <mj-attributes>
             <mj-all font-family="Lato" />
+            <mj-class name="thank-you" font-size="25px" align="center" />
         </mj-attributes>
     </mj-head>
     <mj-body css-class="global">
@@ -56,4 +57,4 @@ app.get("/", (req, res) => {
     res.send(mjml(component).html)
 })
 
-app.listen(3000) 
+app.listen(3200) 

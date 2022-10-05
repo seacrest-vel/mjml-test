@@ -20,7 +20,6 @@ const component = (0, create_component_1.createComponent)(`<mjml>
             box-sizing: border-box;
             padding: 0;
             margin: 0;
-            font-size: 16px !important;
           }
           .layout {
             margin: 0;
@@ -38,9 +37,11 @@ const component = (0, create_component_1.createComponent)(`<mjml>
             background-color: #ffffff;
             color: #374656;
           }
+          ${Footer_1.FooterStyles}
         </mj-style>
         <mj-attributes>
             <mj-all font-family="Lato" />
+            <mj-class name="thank-you" font-size="25px" align="center" />
         </mj-attributes>
     </mj-head>
     <mj-body css-class="global">
@@ -56,4 +57,4 @@ const component = (0, create_component_1.createComponent)(`<mjml>
 app.get("/", (req, res) => {
     res.send((0, mjml_1.default)(component).html);
 });
-app.listen(3000);
+app.listen(3200);
