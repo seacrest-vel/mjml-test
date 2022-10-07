@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Footer = exports.FooterStyles = void 0;
-const create_component_1 = require("../../base/create-component");
+const component_1 = require("../../lib/component");
 exports.FooterStyles = `
   .polisua-is {
     text-align: center !important;
 }`;
-exports.Footer = (0, create_component_1.createComponent)(`
+exports.Footer = (0, component_1.createComponentFromMJML)(`
 <mj-section>
   <mj-section padding="0">
     <mj-column padding="0">

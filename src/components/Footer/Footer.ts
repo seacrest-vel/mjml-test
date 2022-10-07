@@ -1,11 +1,12 @@
-import { createComponent } from "../../base/create-component";
+import { createComponentFromMJML } from "../../lib/component";
 
 export const FooterStyles = `
   .polisua-is {
     text-align: center !important;
 }`
 
-export const Footer = createComponent(`
+
+export const Footer = createComponentFromMJML(`
 <mj-section>
   <mj-section padding="0">
     <mj-column padding="0">

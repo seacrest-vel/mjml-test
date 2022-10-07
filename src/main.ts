@@ -1,14 +1,26 @@
 import express from 'express';
+import {readFile} from "fs/promises";
+import {join} from "path"
 import mjml from 'mjml';
 import { BodyComponent } from 'mjml-core';
-import { createComponent } from './base/create-component';
+import { createComponentFromMJML, TestComponent } from "./lib/component";
+// import { loadMJML } from './base/load-mjml';
 import { Footer, FooterStyles } from './components/Footer/Footer';
 import { Logo } from './components/Logo/Logo';
 
 const app = express();
 app.use(express.json());
 
-const component = createComponent(`<mjml>
+
+// loadMJML("Footer/Footer").then(buffer => {
+//     console.log("TEMPLATE ================= :", createComponent(buffer.toString()));
+// });
+
+// readFile(join(__dirname, "..", "./src/components/Footer/Footer.mjml"), "utf-8").then(buffer => {
+//     console.log("TEMPLATE ================= :", createComponentFromMJML(buffer.toString()))
+// }).catch(err => console.log("Eeeee", err))
+
+const component = createComponentFromMJML(`<mjml>
     <mj-head>
         <mj-title>Layout</mj-title>
         <mj-font name="Montserrat" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" />
@@ -53,8 +65,14 @@ const component = createComponent(`<mjml>
     </mj-body>
 </mjml>`)
 
-app.get("/", (req, res) => { 
-    res.send(mjml(component).html)
+const test = new TestComponent()
+
+console.log("TEST", test.create());
+
+
+app.get("/", (req, res) => {
+    
+    // res.send(mjml(test.create()).html)
 })
 
 app.listen(3200) 

@@ -4,13 +4,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mjml_1 = __importDefault(require("mjml"));
-const create_component_1 = require("./base/create-component");
+const component_1 = require("./lib/component");
+// import { loadMJML } from './base/load-mjml';
 const Footer_1 = require("./components/Footer/Footer");
 const Logo_1 = require("./components/Logo/Logo");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-const component = (0, create_component_1.createComponent)(`<mjml>
+// loadMJML("Footer/Footer").then(buffer => {
+//     console.log("TEMPLATE ================= :", createComponent(buffer.toString()));
+// });
+// readFile(join(__dirname, "..", "./src/components/Footer/Footer.mjml"), "utf-8").then(buffer => {
+//     console.log("TEMPLATE ================= :", createComponentFromMJML(buffer.toString()))
+// }).catch(err => console.log("Eeeee", err))
+const component = (0, component_1.createComponentFromMJML)(`<mjml>
     <mj-head>
         <mj-title>Layout</mj-title>
         <mj-font name="Montserrat" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" />
@@ -54,7 +60,9 @@ const component = (0, create_component_1.createComponent)(`<mjml>
         ${Footer_1.Footer}
     </mj-body>
 </mjml>`);
+const test = new component_1.TestComponent();
+console.log("TEST", test.create());
 app.get("/", (req, res) => {
-    res.send((0, mjml_1.default)(component).html);
+    // res.send(mjml(test.create()).html)
 });
 app.listen(3200);
