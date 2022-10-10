@@ -1,5 +1,6 @@
 import { BodyComponent } from "mjml-core";
-import { interpolate, loadFile } from "./handlers";
+import { evaluate, loadFile } from "./handlers";
+import { ComponentValues, InitComponent } from "./types";
 
 export function createComponentFromMJML(template: string) {
   class Component extends BodyComponent {
@@ -13,23 +14,23 @@ export function createComponentFromMJML(template: string) {
   return Component.renderMJML();
 }
 
-export function Component(selector: string) {
-  return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
-    descriptor.value = function (...args: any[]) {
-
-    }
+export function ConfigureValues(...values: string[]) {
+  return (target: Function) => {
+    target.prototype.evals = values;
+    console.log(target.prototype.evals);
+    
   }
 }
 
 export function ConfigureTemplate(options?: {
   files?: {mjmlFile?: string, cssFile?: string},
-  template?: {bottom?: boolean, insert?: string}
-  interpolate?: Array<[string, any]>
+  template?: {bottom?: boolean, filePlaceholder?: string},
+  evaluate?: Object,
 }) {
   let mjmlFile = "";
   let cssFile = "";
 
-  if (options && options.files) {
+  if (options?.files) {
     if (options.files.mjmlFile) {
       mjmlFile = loadFile(options.files.mjmlFile, "mjml");
     }
@@ -42,15 +43,15 @@ export function ConfigureTemplate(options?: {
     const method = descriptor.value;
 
     descriptor.value = function (template: string) {
-      let mjmlTemplate = createComponentFromMJML(method.apply(target, template));
+      let mjmlTemplate = createComponentFromMJML(method.apply(target, template)) || "";
 
       if (mjmlTemplate || mjmlFile) {
-        mjmlTemplate = options && options.template && options.template.bottom ? 
-        (mjmlTemplate || "").concat(interpolate(mjmlFile)) : interpolate(mjmlFile).concat(mjmlTemplate || "");
+        mjmlTemplate = options?.template?.bottom ? 
+          mjmlTemplate.concat(evaluate(mjmlFile)) : evaluate(mjmlFile).concat(mjmlTemplate);
         
-        if (options && options.template && options.template.insert) {
+        if (options?.template?.filePlaceholder) {
           try {
-            const split = mjmlTemplate.split(options.template.insert);
+            const split = mjmlTemplate.split(options.template.filePlaceholder);
             if (split.length < 2 || split.length > 2) {
               throw new Error("Cannot be inserted");
             } else {
@@ -72,16 +73,13 @@ export function ConfigureTemplate(options?: {
   }
 }
 
-declare interface InitComponent {
-  create(): string | void;
-}
-
 export class TestComponent implements InitComponent {
-
+  
   @ConfigureTemplate({
-    files: {mjmlFile: "Test"}
+    files: {mjmlFile: "Test"},
+    evaluate: {},
   })
-  create(values?: any) {
-    
+  create(values?: ComponentValues) {
+    return
   }
 }

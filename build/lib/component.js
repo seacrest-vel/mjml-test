@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestComponent = exports.ConfigureTemplate = exports.Component = exports.createComponentFromMJML = void 0;
+exports.TestComponent = exports.ConfigureTemplate = exports.ConfigureValues = exports.createComponentFromMJML = void 0;
 const mjml_core_1 = require("mjml-core");
 const handlers_1 = require("./handlers");
 function createComponentFromMJML(template) {
@@ -24,17 +24,17 @@ function createComponentFromMJML(template) {
     return Component.renderMJML();
 }
 exports.createComponentFromMJML = createComponentFromMJML;
-function Component(selector) {
-    return (target, propertyKey, descriptor) => {
-        descriptor.value = function (...args) {
-        };
+function ConfigureValues(...values) {
+    return (target) => {
+        target.prototype.evals = values;
+        console.log(target.prototype.evals);
     };
 }
-exports.Component = Component;
+exports.ConfigureValues = ConfigureValues;
 function ConfigureTemplate(options) {
     let mjmlFile = "";
     let cssFile = "";
-    if (options && options.files) {
+    if (options === null || options === void 0 ? void 0 : options.files) {
         if (options.files.mjmlFile) {
             mjmlFile = (0, handlers_1.loadFile)(options.files.mjmlFile, "mjml");
         }
@@ -45,13 +45,14 @@ function ConfigureTemplate(options) {
     return (target, propertyKey, descriptor) => {
         const method = descriptor.value;
         descriptor.value = function (template) {
-            let mjmlTemplate = createComponentFromMJML(method.apply(target, template));
+            var _a, _b;
+            let mjmlTemplate = createComponentFromMJML(method.apply(target, template)) || "";
             if (mjmlTemplate || mjmlFile) {
-                mjmlTemplate = options && options.template && options.template.bottom ?
-                    (mjmlTemplate || "").concat((0, handlers_1.interpolate)(mjmlFile)) : (0, handlers_1.interpolate)(mjmlFile).concat(mjmlTemplate || "");
-                if (options && options.template && options.template.insert) {
+                mjmlTemplate = ((_a = options === null || options === void 0 ? void 0 : options.template) === null || _a === void 0 ? void 0 : _a.bottom) ?
+                    mjmlTemplate.concat((0, handlers_1.evaluate)(mjmlFile)) : (0, handlers_1.evaluate)(mjmlFile).concat(mjmlTemplate);
+                if ((_b = options === null || options === void 0 ? void 0 : options.template) === null || _b === void 0 ? void 0 : _b.filePlaceholder) {
                     try {
-                        const split = mjmlTemplate.split(options.template.insert);
+                        const split = mjmlTemplate.split(options.template.filePlaceholder);
                         if (split.length < 2 || split.length > 2) {
                             throw new Error("Cannot be inserted");
                         }
@@ -75,11 +76,13 @@ function ConfigureTemplate(options) {
 exports.ConfigureTemplate = ConfigureTemplate;
 class TestComponent {
     create(values) {
+        return;
     }
 }
 __decorate([
     ConfigureTemplate({
-        files: { mjmlFile: "Test" }
+        files: { mjmlFile: "Test" },
+        evaluate: {},
     }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

@@ -3,13 +3,13 @@ import { join } from "path";
 import fs from "fs";
 import {BehaviorSubject} from "rxjs";
 
-export function interpolate(template: string, ...values: Array<[string, any]>) {
+export function evaluate(template: string, obj?: Object) {
   const subject = new BehaviorSubject<string>(template);
   let result = template;
-  
-  values.forEach(([key, value]) => {
+
+  obj && Object.entries(obj).forEach(([key, value]) => {
     subject.subscribe(template => {
-      result = template.replace(`{{${key}}}`, value.toString());
+      result = template.replace(`{${key}}`, value.toString());
     })
     subject.next(result)
   })

@@ -67,6 +67,7 @@ const component = createComponentFromMJML(`<mjml>
 
 const test = new TestComponent()
 
+
 console.log("TEST", test.create());
 
 
