@@ -7,12 +7,14 @@ export function evaluate(template: string, obj?: Object) {
   const subject = new BehaviorSubject<string>(template);
   let result = template;
 
-  obj && Object.entries(obj).forEach(([key, value]) => {
-    subject.subscribe(template => {
-      result = template.replace(`{${key}}`, value.toString());
+  if (obj) {
+    Object.entries(obj).forEach(([key, value]) => {
+      subject.subscribe(template => {
+        result = template.replace(`{${key}}`, value.toString());
+      })
+      subject.next(result)
     })
-    subject.next(result)
-  })
+  }
   
   subject.unsubscribe();
   

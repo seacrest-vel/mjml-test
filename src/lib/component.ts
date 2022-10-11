@@ -1,11 +1,11 @@
 import { BodyComponent } from "mjml-core";
 import { evaluate, loadFile } from "./handlers";
-import { ComponentValues, InitComponent } from "./types";
+import { ComponentValues, InitComponent, Options } from "./types";
 
 export function createComponentFromMJML(template: string) {
   class Component extends BodyComponent {
     static renderMJML(): string {
-      return template;
+      return template || "";
     }
     render(): string {
       return "";
@@ -14,19 +14,7 @@ export function createComponentFromMJML(template: string) {
   return Component.renderMJML();
 }
 
-export function ConfigureValues(...values: string[]) {
-  return (target: Function) => {
-    target.prototype.evals = values;
-    console.log(target.prototype.evals);
-    
-  }
-}
-
-export function ConfigureTemplate(options?: {
-  files?: {mjmlFile?: string, cssFile?: string},
-  template?: {bottom?: boolean, filePlaceholder?: string},
-  evaluate?: Object,
-}) {
+export function Template(options?: Options) {
   let mjmlFile = "";
   let cssFile = "";
 
@@ -39,15 +27,19 @@ export function ConfigureTemplate(options?: {
     }
   }
 
+  if (cssFile && mjmlFile) {
+    mjmlFile = mjmlFile.replace("{styles}", cssFile)
+  }
+
   return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
     const method = descriptor.value;
 
-    descriptor.value = function (template: string) {
-      let mjmlTemplate = createComponentFromMJML(method.apply(target, template)) || "";
+    descriptor.value = function (values: any) {
+      let mjmlTemplate = createComponentFromMJML((method as Function).call(target, values));
 
       if (mjmlTemplate || mjmlFile) {
-        mjmlTemplate = options?.template?.bottom ? 
-          mjmlTemplate.concat(evaluate(mjmlFile)) : evaluate(mjmlFile).concat(mjmlTemplate);
+        mjmlTemplate = options?.template?.top ? 
+          mjmlTemplate.concat(evaluate(mjmlFile, values)) : evaluate(mjmlFile, values).concat(mjmlTemplate);
         
         if (options?.template?.filePlaceholder) {
           try {
@@ -74,12 +66,11 @@ export function ConfigureTemplate(options?: {
 }
 
 export class TestComponent implements InitComponent {
-  
-  @ConfigureTemplate({
-    files: {mjmlFile: "Test"},
-    evaluate: {},
+
+  @Template({
+    files: {mjmlFile: "Test", cssFile: "Test"},
   })
-  create(values?: ComponentValues) {
+  create(values: ComponentValues) {
     return
   }
 }
