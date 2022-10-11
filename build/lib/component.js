@@ -72,12 +72,12 @@ function Template(options) {
 exports.Template = Template;
 class TestComponent {
     create(values) {
-        return;
     }
 }
 __decorate([
     Template({
-        files: { mjmlFile: "Test", cssFile: "Test" },
+        files: { mjmlFile: "Test",
+            cssFile: "Test" },
     }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

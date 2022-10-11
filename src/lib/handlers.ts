@@ -1,23 +1,16 @@
 
 import { join } from "path";
 import fs from "fs";
-import {BehaviorSubject} from "rxjs";
 
 export function evaluate(template: string, obj?: Object) {
-  const subject = new BehaviorSubject<string>(template);
   let result = template;
 
   if (obj) {
     Object.entries(obj).forEach(([key, value]) => {
-      subject.subscribe(template => {
-        result = template.replace(`{${key}}`, value.toString());
-      })
-      subject.next(result)
+      result = result.replace(`{${key}}`, value.toString())
     })
   }
-  
-  subject.unsubscribe();
-  
+
   return result;
 }
 

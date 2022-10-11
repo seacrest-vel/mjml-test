@@ -63,7 +63,7 @@ const component = (0, component_1.createComponentFromMJML)(`<mjml>
 const test = new component_1.TestComponent();
 const o = { kek: "KEK", ins: "INS" };
 const v = "val";
-console.log("TEST", test.create({}));
+console.log("TEST", test.create(o));
 app.get("/", (req, res) => {
     // res.send(mjml(test.create()).html)
 });

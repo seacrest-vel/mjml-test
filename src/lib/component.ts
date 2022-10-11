@@ -68,9 +68,9 @@ export function Template(options?: Options) {
 export class TestComponent implements InitComponent {
 
   @Template({
-    files: {mjmlFile: "Test", cssFile: "Test"},
+    files: {mjmlFile: "Test",
+    cssFile: "Test"},
   })
-  create(values: ComponentValues) {
-    return
+  create<ComponentValues>(values: ComponentValues) {
   }
 }

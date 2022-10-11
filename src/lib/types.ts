@@ -1,4 +1,4 @@
-export type ComponentValues<T extends object = {}> = T;
+export type ComponentValues<T extends object = Object> = T;
 
 export interface InitComponent {
   create(v?: ComponentValues): string | void;

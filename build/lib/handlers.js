@@ -6,19 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadFile = exports.evaluate = void 0;
 const path_1 = require("path");
 const fs_1 = __importDefault(require("fs"));
-const rxjs_1 = require("rxjs");
 function evaluate(template, obj) {
-    const subject = new rxjs_1.BehaviorSubject(template);
     let result = template;
     if (obj) {
         Object.entries(obj).forEach(([key, value]) => {
-            subject.subscribe(template => {
-                result = template.replace(`{${key}}`, value.toString());
-            });
-            subject.next(result);
+            result = result.replace(`{${key}}`, value.toString());
         });
     }
-    subject.unsubscribe();
     return result;
 }
 exports.evaluate = evaluate;

@@ -69,10 +69,11 @@ const test = new TestComponent()
 const o = {kek: "KEK", ins: "INS"}
 const v = "val"
 
-console.log("TEST", test.create({}));
+console.log("TEST", test.create(o));
 
 
 app.get("/", (req, res) => {
+
     // res.send(mjml(test.create()).html)
 })
 
