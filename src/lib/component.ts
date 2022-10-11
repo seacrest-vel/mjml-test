@@ -1,6 +1,7 @@
+import mjml from "mjml";
 import { BodyComponent } from "mjml-core";
-import { evaluate, loadFile } from "./handlers";
-import { ComponentValues, InitComponent, Options } from "./types";
+import {evaluate, loadFile } from "./handlers";
+import { ComponentValues, FactoryOptions, InitComponent, Options } from "./types";
 
 export function createComponentFromMJML(template: string) {
   class Component extends BodyComponent {
@@ -14,7 +15,7 @@ export function createComponentFromMJML(template: string) {
   return Component.renderMJML();
 }
 
-export function Template(options?: Options) {
+export function Template(options?: Options | FactoryOptions) {
   let mjmlFile = "";
   let cssFile = "";
 
@@ -74,3 +75,22 @@ export class TestComponent implements InitComponent {
   create<ComponentValues>(values: ComponentValues) {
   }
 }
+
+function factory(template: string , options?: FactoryOptions) {
+  class Component implements InitComponent {
+    @Template({
+      ...options,
+      files: {
+        mjmlFile: options?.import || options?.files?.mjmlFile,
+        cssFile: options?.importCss ? options?.import : options?.files?.cssFile
+      }
+    })
+    create(values: ComponentValues = options?.values): string {
+      return template;
+    }
+  }
+
+  return options?.type === "html" ? mjml(new Component().create()).html : new Component().create();
+}
+
+export {factory as $}

@@ -1,10 +1,11 @@
 import express from 'express';
+// import { factory as $ } from './lib/handlers';
+
 import {readFile} from "fs/promises";
 import {join} from "path"
 import mjml from 'mjml';
 import { BodyComponent } from 'mjml-core';
-import { createComponentFromMJML, TestComponent } from "./lib/component";
-// import { loadMJML } from './base/load-mjml';
+import { $, createComponentFromMJML, TestComponent } from "./lib/component";
 import { Footer, FooterStyles } from './components/Footer/Footer';
 import { Logo } from './components/Logo/Logo';
 
@@ -69,9 +70,9 @@ const test = new TestComponent()
 const o = {kek: "KEK", ins: "INS"}
 const v = "val"
 
-console.log("TEST", test.create(o));
+// console.log("TEST", test.create(o));
 
-
+console.log($("<mjml><mj-body>AS HTML</mj-body></mjml>"))
 app.get("/", (req, res) => {
 
     // res.send(mjml(test.create()).html)

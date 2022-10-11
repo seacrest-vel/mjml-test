@@ -8,8 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestComponent = exports.Template = exports.createComponentFromMJML = void 0;
+exports.$ = exports.TestComponent = exports.Template = exports.createComponentFromMJML = void 0;
+const mjml_1 = __importDefault(require("mjml"));
 const mjml_core_1 = require("mjml-core");
 const handlers_1 = require("./handlers");
 function createComponentFromMJML(template) {
@@ -84,3 +88,22 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TestComponent.prototype, "create", null);
 exports.TestComponent = TestComponent;
+function factory(template, options) {
+    var _a, _b;
+    class Component {
+        create(values = options === null || options === void 0 ? void 0 : options.values) {
+            return template;
+        }
+    }
+    __decorate([
+        Template(Object.assign(Object.assign({}, options), { files: {
+                mjmlFile: (options === null || options === void 0 ? void 0 : options.import) || ((_a = options === null || options === void 0 ? void 0 : options.files) === null || _a === void 0 ? void 0 : _a.mjmlFile),
+                cssFile: (options === null || options === void 0 ? void 0 : options.importCss) ? options === null || options === void 0 ? void 0 : options.import : (_b = options === null || options === void 0 ? void 0 : options.files) === null || _b === void 0 ? void 0 : _b.cssFile
+            } })),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", String)
+    ], Component.prototype, "create", null);
+    return (options === null || options === void 0 ? void 0 : options.type) === "html" ? (0, mjml_1.default)(new Component().create()).html : new Component().create();
+}
+exports.$ = factory;

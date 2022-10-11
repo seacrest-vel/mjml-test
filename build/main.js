@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const component_1 = require("./lib/component");
-// import { loadMJML } from './base/load-mjml';
 const Footer_1 = require("./components/Footer/Footer");
 const Logo_1 = require("./components/Logo/Logo");
 const app = (0, express_1.default)();
@@ -63,7 +62,8 @@ const component = (0, component_1.createComponentFromMJML)(`<mjml>
 const test = new component_1.TestComponent();
 const o = { kek: "KEK", ins: "INS" };
 const v = "val";
-console.log("TEST", test.create(o));
+// console.log("TEST", test.create(o));
+console.log((0, component_1.$)("<mjml><mj-body>AS HTML</mj-body></mjml>"));
 app.get("/", (req, res) => {
     // res.send(mjml(test.create()).html)
 });

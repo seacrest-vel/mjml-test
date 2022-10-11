@@ -1,6 +1,9 @@
 
 import { join } from "path";
 import fs from "fs";
+import mjml from 'mjml';
+import { ComponentValues, FactoryOptions, InitComponent, Options } from "./types";
+import { createComponentFromMJML } from "./component";
 
 export function evaluate(template: string, obj?: Object) {
   let result = template;
