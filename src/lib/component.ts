@@ -66,16 +66,6 @@ export function Template(options?: Options | FactoryOptions) {
   }
 }
 
-export class TestComponent implements InitComponent {
-
-  @Template({
-    files: {mjmlFile: "Test",
-    cssFile: "Test"},
-  })
-  create<ComponentValues>(values: ComponentValues) {
-  }
-}
-
 function factory(template: string , options?: FactoryOptions) {
   class Component implements InitComponent {
     @Template({

@@ -1,25 +1,11 @@
 import express from 'express';
-// import { factory as $ } from './lib/handlers';
-
-import {readFile} from "fs/promises";
-import {join} from "path"
-import mjml from 'mjml';
-import { BodyComponent } from 'mjml-core';
-import { $, createComponentFromMJML, TestComponent } from "./lib/component";
+import { $, createComponentFromMJML } from "./lib/component";
 import { Footer, FooterStyles } from './components/Footer/Footer';
 import { Logo } from './components/Logo/Logo';
+import { TestComponent } from './components/Test/Test';
 
 const app = express();
 app.use(express.json());
-
-
-// loadMJML("Footer/Footer").then(buffer => {
-//     console.log("TEMPLATE ================= :", createComponent(buffer.toString()));
-// });
-
-// readFile(join(__dirname, "..", "./src/components/Footer/Footer.mjml"), "utf-8").then(buffer => {
-//     console.log("TEMPLATE ================= :", createComponentFromMJML(buffer.toString()))
-// }).catch(err => console.log("Eeeee", err))
 
 const component = createComponentFromMJML(`<mjml>
     <mj-head>
@@ -68,11 +54,9 @@ const component = createComponentFromMJML(`<mjml>
 
 const test = new TestComponent()
 const o = {kek: "KEK", ins: "INS"}
-const v = "val"
 
-// console.log("TEST", test.create(o));
+console.log("TEST", test.create(o));
 
-console.log($("<mjml><mj-body>AS HTML</mj-body></mjml>"))
 app.get("/", (req, res) => {
 
     // res.send(mjml(test.create()).html)

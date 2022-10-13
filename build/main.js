@@ -7,14 +7,9 @@ const express_1 = __importDefault(require("express"));
 const component_1 = require("./lib/component");
 const Footer_1 = require("./components/Footer/Footer");
 const Logo_1 = require("./components/Logo/Logo");
+const Test_1 = require("./components/Test/Test");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-// loadMJML("Footer/Footer").then(buffer => {
-//     console.log("TEMPLATE ================= :", createComponent(buffer.toString()));
-// });
-// readFile(join(__dirname, "..", "./src/components/Footer/Footer.mjml"), "utf-8").then(buffer => {
-//     console.log("TEMPLATE ================= :", createComponentFromMJML(buffer.toString()))
-// }).catch(err => console.log("Eeeee", err))
 const component = (0, component_1.createComponentFromMJML)(`<mjml>
     <mj-head>
         <mj-title>Layout</mj-title>
@@ -59,11 +54,9 @@ const component = (0, component_1.createComponentFromMJML)(`<mjml>
         ${Footer_1.Footer}
     </mj-body>
 </mjml>`);
-const test = new component_1.TestComponent();
+const test = new Test_1.TestComponent();
 const o = { kek: "KEK", ins: "INS" };
-const v = "val";
-// console.log("TEST", test.create(o));
-console.log((0, component_1.$)("<mjml><mj-body>AS HTML</mj-body></mjml>"));
+console.log("TEST", test.create(o));
 app.get("/", (req, res) => {
     // res.send(mjml(test.create()).html)
 });

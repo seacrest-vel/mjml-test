@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.$ = exports.TestComponent = exports.Template = exports.createComponentFromMJML = void 0;
+exports.$ = exports.Template = exports.createComponentFromMJML = void 0;
 const mjml_1 = __importDefault(require("mjml"));
 const mjml_core_1 = require("mjml-core");
 const handlers_1 = require("./handlers");
@@ -74,20 +74,6 @@ function Template(options) {
     };
 }
 exports.Template = Template;
-class TestComponent {
-    create(values) {
-    }
-}
-__decorate([
-    Template({
-        files: { mjmlFile: "Test",
-            cssFile: "Test" },
-    }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], TestComponent.prototype, "create", null);
-exports.TestComponent = TestComponent;
 function factory(template, options) {
     var _a, _b;
     class Component {

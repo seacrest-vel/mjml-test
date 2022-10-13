@@ -1,9 +1,11 @@
 
-import { join } from "path";
 import fs from "fs";
-import mjml from 'mjml';
-import { ComponentValues, FactoryOptions, InitComponent, Options } from "./types";
-import { createComponentFromMJML } from "./component";
+import path, { join, basename } from "path";
+import {lib, build, src} from "./mjml.json";
+
+const LIB = `${process.cwd()}/${lib}/`.replace("//", "/");
+const BUILD = `${process.cwd()}/${build}/`.replace("//", "/");
+const SRC = `${process.cwd()}/${src}/`.replace("//", "/");
 
 export function evaluate(template: string, obj?: Object) {
   let result = template;
@@ -17,8 +19,12 @@ export function evaluate(template: string, obj?: Object) {
   return result;
 }
 
-export function loadFile(filename: string, ext: string) {
-  const file = fs.readFileSync(join(__dirname, `../../src/components/${filename}/${filename}.${ext}`), "utf-8")
-  fs.writeFileSync(join(__dirname, `../components/${filename}.${ext}`), file)
-  return fs.readFileSync(join(__dirname, `../components/${filename}.${ext}`), "utf-8")
+export function loadFile(filename: string, ext: string) { 
+  const build =`${BUILD}${filename}.${ext}`.replace("//", "/");
+  const src = `${SRC}${filename}/${filename}.${ext}`.replace("//", "/");
+  
+  const file = fs.readFileSync(src, "utf-8");
+  fs.writeFileSync(build, file);
+  
+  return fs.readFileSync(build, "utf-8")
 }
