@@ -12,7 +12,7 @@ export function evaluate(template: string, obj?: Object) {
 
   if (obj) {
     Object.entries(obj).forEach(([key, value]) => {
-      result = result.replace(`{${key}}`, value.toString())
+      result = result.replace(new RegExp(`{${key}}`, "g"), value.toString())
     })
   }
 
